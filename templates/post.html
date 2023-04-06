@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ post['title'] }}</h1>
+    <p>{{ post['content'] }}</p>
+    {% if post.paper != '' %}
+    <div class="paper-container">
+    <div class="pdf-container" style="margin-bottom: 20px;">
+      <iframe src='{{post.paper }}'></iframe>
+    </div>
+        <a href='{{post.paper }}' download class="download-link">Download Paper (PDF)</a>
+    </div>
+    {% endif %}
+{% endblock %}

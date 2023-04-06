@@ -1,0 +1,172 @@
+/* Global styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Verdana, sans-serif;
+}
+
+html {
+  background-color: #F5F5F5;
+}
+
+body {
+  background-color: #F8F8F8;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #CCCCCC;
+}
+
+a {
+  color: #2F4F4F;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+  background-color: #BFEFFF;
+  color: #FFFFFF;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 36px;
+  color: #2F4F4F;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 24px;
+  color: #2F4F4F;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 18px;
+  color: #2F4F4F;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #2F4F4F;
+  margin-bottom: 10px;
+}
+
+ul {
+  margin-bottom: 10px;
+  list-style: disc;
+}
+
+li {
+  margin-left: 20px;
+}
+
+/* Header styles */
+
+header {
+  background-color: #005DA3;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  color: #FFFFFF;
+}
+
+.title {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.profile-pic {
+  position: relative;
+  top: 10px; /* Increase or decrease the top value as needed */
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.profile-pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.paper-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.download-link {
+  background-color: #0077CC;
+  color: #FFFFFF;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.download-link:hover {
+  background-color: #005DA3;
+}
+
+.pdf-container {
+  border: 1px solid #CCCCCC;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 60%;
+}
+
+.pdf-container iframe {
+  width: 100%;
+  height: 600px;
+}
+
+
+/* Navigation styles */
+
+nav {
+  background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav li {
+  display: inline-block;
+  margin-left: 20px;
+}
+
+nav a {
+  color: #2F4F4F;
+}
+
+nav a:hover {
+  color: #FFFFFF;
+  background-color: #BFEFFF;
+   border-radius: 5px;
+  padding: 5px;
+}
+
+/*

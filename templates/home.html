@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Marcell Emmer's Personal Blog{% endblock %}
+{% block content %}
+    <header>
+        <div class="title">
+            <h1>Marcell Emmer's Personal Blog</h1>
+        </div>
+        <div class="logo">
+          <img src="../static/pictures/portrait.jpg" alt="Marcell Emmer" class="profile-pic" />
+        </div>
+    </header>
+    <p class="intro">I am a physicist with interests in group theory, particle physics, QFT, machine learning and more. Currently studying at the University of Technology and Economics. My research focuses on group theory and quantum information theory.</p>
+    <div class="category">
+      <h2>Latest Posts</h2>
+      <div class="container">
+      {% for post in posts %}
+        <div class="row mb-4">
+          <div class="col">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title"><a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h5>
+                <p class="card-text">{{ post.content[:100] }}...</p>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted">{{ post.date_posted.strftime('%m/%d/%Y') }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    </div>
+    <style>
+      .card {
+        border-radius: 0;
+        border: none;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+      }
+
+      .card:hover {
+        transform: translateY(-0.125rem);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+      }
+    </style>
+
+{% endblock %}
