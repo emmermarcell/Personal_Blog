@@ -7,10 +7,10 @@
 {% block content %}
     <h1>{{ post['title'] }}</h1>
     {% if soup %}
-        {% set html_pattern = '<pre><code class="[^"]*">(.|\n)*?</code></pre>' %}
+        {% set html_pattern = '<pre><code class="[^"]*">([\\s\\S]*?)</code></pre>' %}
         {% set html_match = post['content']|regex_find(html_pattern) %}
         {% if html_match %}
-            {% set html_text = html_match.group(0) | safe %}
+            {% set html_text = html_match.group(1) | safe %}
             {% set pre_text = post['content'][:html_match.start()] %}
             {% set post_text = post['content'][html_match.end():] %}
 
