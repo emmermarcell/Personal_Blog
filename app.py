@@ -1,49 +1,89 @@
-from flask import Flask, render_template
-from datetime import datetime
+from flask import Flask, render_template, request, redirect
+import json
 
-posts = [
-    {'id': 1,
-     'date_posted': datetime(2023, 4, 3),
-     'title': 'BSc Thesis - Investigation of coupled oscillators using entanglement theory',
-     'content': 'In this work, we investigate the quantum entanglement of two coupled harmonic oscillators represented by an so(2,1) symmetric Hamiltonian operator, displaying a dependence on two parameters. Changing the parameters, we explore the geometry of the upper sheet of a two sheeted hyperboloid, and for each point, we determine the entanglement entropy of the system. A special elaboration of the entanglement of the vacuum state shows, that it depends on the geodesic lenghts of the curve traversed in parameter space. A change in the external parameters evolves the vacuum state to a squeezed one playing an important role in quantum optics. Traversing paths in the hyperboloid we also study the entanglement properties of separable and excited states. The paper is hungarian, but it is still an interesting topic, so I included it on my page.',
-     'paper': '../static/papers/BSc_Szakdoga.pdf'},
-    {'id': 2,
-     'date_posted': datetime(2023, 4, 3),
-     'title': 'Remarkable representations of the 2 + 2 de sitter group',
-     'content': 'A paper I have been working on for a while under my professor, Péter Lévay. We have been investigating the different oscillator realisations of the AdS3 space. It is not a complete paper, more like a collection of thoughts, but it gives an idea about the working habits and the mindset of theoretical physicists when they work on a problem.',
-     'paper': '../static/papers/Remarkable_representation_of_SU22.pdf'},
-    {'id': 3,
-     'date_posted': datetime(2023, 4, 3),
-     'title': 'Quantum Geometric Tensor of the SU(1,1) and SU(2) groups',
-     'content': 'Yet another unfinished paper, this time about the QGT of oscillator systems with different symmetries. Namely SU(1,1) and SU(2). ChatGPT gives the following definition for QGTs: The quantum geometric tensor is a mathematical object that characterizes the geometry of quantum systems, particularly in the context of entanglement. Its real and imaginary parts respectively measure the local curvature and non-local holonomy of the quantum state space. The concept of the quantum geometric tensor was introduced by Kitaev and Preskill in their 2006 paper "Topological entanglement entropy", and has since been studied extensively in the field of quantum information and many-body physics. For example, Zhang, Chen, and Wang provided a comprehensive review of the quantum geometric tensor and its applications to the study of entanglement in pure quantum states in their 2012 paper "Quantum geometric tensor and entanglement of pure states". Additionally, Zhu, Lu, and Wang discussed the use of the quantum geometric tensor in the study of multipartite entangled states and its relation to the quantum Fisher information matrix in their 2014 paper "Quantum Fisher information matrix and quantum geometric tensor for multipartite entangled states".',
-     'paper': '../static/papers/QGT%20of%20SU11.pdf'},
-    {'id': 4,
-     'date_posted': datetime(2023, 4, 4),
-     'title': 'Introduction to Machine Learning',
-     'content': 'Machine learning is a topic I studied completely on my own. I tried out several forms of media including books, online courses, and youtube videos. I found books to be the most useful, but I also think that the best way to learn about it is to try out the things you read. A great introductory book that covers the mathematics and the scope of different ML algorithms if the The Hundred-Page Machine Learning Book" by Andriy Burkov. It covers a suprisingly broad range of topics despite it\'s length. But the book I found to be most useful is Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow" by Aurélien Géron. It is a much lenghtier piece, but as it\'s name suggests, it covers all the necessary fields of ML including detailed coding examples. You need to have a foundation of Linear Algebra, Probability Theory and some basic Python knowledge to grasp it\'s content but I included some great resources for these topics as well. I recommend the following books: "Introduction to Linear Algebra" by Gilbert Strang, "Introduction to Probability" by Joseph K. Blitzstein and Jessica Hwang, and "Python for Data Analysis" by Wes McKinney. In the future I plan to upload some of my own projects to this blog so stay tuned!',
-        'paper': ''},
-]
+POSTS_FILE = r"static\posts.json"
 
-posts = posts[::-1] # reverse the order of the posts so the newest one is at te top
+
+def get_posts():
+    with open(POSTS_FILE) as f:
+        posts = json.load(f)
+        posts = posts[::-1]  # reverse the order of the posts so the newest one is at te top
+    return posts
+
+
+def save_posts(posts):
+    with open(POSTS_FILE, "w") as f:
+        json.dump(posts, f)
+
 
 app = Flask(__name__, template_folder='templates', static_folder='static')  # create the app
 
+
 @app.route('/')
 def home():
-    return render_template('home.html', posts=posts)
+    return render_template('home.html', posts=get_posts())
+
 
 @app.route('/interest-blog')
 def interest_blog():
     return render_template('interest_blog.html')
 
+
 @app.route('/study-blog')
 def study_blog():
     return render_template('study_blog.html')
 
+
 @app.route('/post/<int:post_id>')
 def post(post_id):
-    post = posts[-post_id]
+    post = get_posts()[-post_id]
     return render_template('post.html', post=post)
+
+
+@app.route("/edit/<int:index>")
+def edit_post(index):
+    posts = get_posts()
+    post = posts[-index]
+    return render_template("edit_post.html", post=post)
+
+
+@app.route("/save/<int:index>", methods=["POST"])
+def save_post(index):
+    posts = get_posts()
+    post = posts[-index]
+    post["title"] = request.form["title"]
+    post["date_posted"] = request.form["date_posted"]
+    post["content"] = request.form["content"]
+    post["paper"] = request.form["paper"]
+    save_posts(posts)
+    return redirect("/")
+
+
+@app.route("/new", methods=["GET", "POST"])
+def new_post():
+    if request.method == "POST":
+        title = request.form["title"]
+        date_posted = request.form["date_posted"]
+        content = request.form["content"]
+        paper = request.form["paper"]
+        posts = get_posts()
+        post = {"id": str(len(posts)+1), "date_posted": date_posted, "title": title, "content": content, "paper": paper}
+        posts.append(post)
+        # Replace with your database or file storage system
+        with open(POSTS_FILE, "w") as f:
+            json.dump(posts, f)
+        return redirect("/")
+    else:
+        return render_template("new_post.html")
+
+
+@app.route("/delete/<int:index>")
+def delete_post(index):
+    posts = get_posts()
+    posts.pop(index-1)
+    save_posts(posts)
+    return redirect("/")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
