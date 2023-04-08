@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Edit Post</title>
-</head>
-<body>
-	<h1>Edit Post</h1>
-	<form action="{{ url_for('save_post', index=post['id']) }}" method="post">
-		<label for="title">Title:</label>
-		<input type="text" name="title" id="title" value="{{ post['title'] }}"><br>
-		<label for="content">Content:</label>
-		<textarea name="content" rows="10" cols="50">{{ post["content"] }}</textarea><br>
-        <label for="paper">Paper:</label>
-		<input type="text" name="paper" id="paper" value="{{ post['paper'] }}"><br>
-		<input type="submit" value="Save">
-	</form>
-</body>
+  <head>
+    <title>Edit Post</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/new_post.css') }}">
+  </head>
+  <body>
+    <h1>Edit Post</h1>
+    <form action="{{ url_for('save_post', index=post['id']) }}" method="post">
+      <label for="title">Title:</label><br>
+      <input type="text" id="title" name="title" value="{{ post['title'] }}"><br><br>
+      <label for="date_posted">Date:</label><br>
+      <textarea id="date_posted" name="date_posted">{{ post['date_posted'] }}</textarea><br><br>
+      <label for="content">Content:</label><br>
+      <textarea id="content" name="content" rows="10" cols="50">{{ post['content'] }}</textarea><br><br>
+      <label for="paper">Paper:</label><br>
+      <textarea id="paper" name="paper">{{ post['paper'] }}</textarea><br><br>
+      <input type="submit" id="edit-post-button" value="Save Changes">
+    </form>
+  </body>
 </html>

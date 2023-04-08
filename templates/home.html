@@ -13,13 +13,13 @@
     <div class="category">
       <h2>Latest Posts</h2>
       <div class="container">
-      {% for post in posts %}
+      {% for post in posts[::-1] %}
         <div class="row mb-4">
           <div class="col">
             <div class="card h-100">
               <div class="card-body">
-                <h5 class="card-title"><a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h5>
-                <p class="card-text">{{ post.content[:100] }}...</p>
+                <h5 class="card-title"><a href="{{ url_for('post', index=post.id) }}">{{ post.title }}</a></h5>
+                <p class="card-text">{{ post.content[:100] | safe  }}...</p>
               </div>
               <div class="card-footer">
                 <small class="text-muted">{{ post.date_posted }}</small>

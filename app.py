@@ -1,22 +1,36 @@
 from flask import Flask, render_template, request, redirect
 import json
+from bs4 import BeautifulSoup
+import re
 
 POSTS_FILE = r"static\posts.json"
 
 
+def regex_find(value, pattern):
+    """Find the first match of a regex pattern in a string and return it as a Match object."""
+    regex = re.compile(pattern)
+    match = regex.search(value)
+    if match:
+        return match
+
+
 def get_posts():
+    """Get the posts from the json file and sort them by date of posting."""
     with open(POSTS_FILE) as f:
         posts = json.load(f)
-        posts = posts[::-1]  # reverse the order of the posts so the newest one is at te top
+    posts = sorted(posts, key=lambda p: int(p['id']))
     return posts
 
 
+
 def save_posts(posts):
+    """Save the posts to the json file."""
     with open(POSTS_FILE, "w") as f:
         json.dump(posts, f)
 
 
 app = Flask(__name__, template_folder='templates', static_folder='static')  # create the app
+app.add_template_filter(regex_find, 'regex_find')   # add the regex filter to the app
 
 
 @app.route('/')
@@ -34,23 +48,30 @@ def study_blog():
     return render_template('study_blog.html')
 
 
-@app.route('/post/<int:post_id>')
-def post(post_id):
-    post = get_posts()[-post_id]
-    return render_template('post.html', post=post)
+@app.route('/post/<int:index>')
+def post(index):
+    """Get the post with the given id and render the post template."""
+    post = get_posts()[index]
+    try:
+        soup = BeautifulSoup(post['content'], 'html.parser')
+    except Exception as e:
+        print(f'Error creating soup for post {index}: {e}')
+        soup = None
+    text = soup.get_text()
+    return render_template('post.html', post=post, soup=soup, text=text)
 
 
 @app.route("/edit/<int:index>")
 def edit_post(index):
     posts = get_posts()
-    post = posts[-index]
+    post = posts[index]
     return render_template("edit_post.html", post=post)
 
 
 @app.route("/save/<int:index>", methods=["POST"])
 def save_post(index):
     posts = get_posts()
-    post = posts[-index]
+    post = posts[index]
     post["title"] = request.form["title"]
     post["date_posted"] = request.form["date_posted"]
     post["content"] = request.form["content"]
@@ -67,7 +88,7 @@ def new_post():
         content = request.form["content"]
         paper = request.form["paper"]
         posts = get_posts()
-        post = {"id": str(len(posts)+1), "date_posted": date_posted, "title": title, "content": content, "paper": paper}
+        post = {"id": str(len(posts)), "date_posted": date_posted, "title": title, "content": content, "paper": paper}
         posts.append(post)
         # Replace with your database or file storage system
         with open(POSTS_FILE, "w") as f:
@@ -80,7 +101,10 @@ def new_post():
 @app.route("/delete/<int:index>")
 def delete_post(index):
     posts = get_posts()
-    posts.pop(index-1)
+    posts.pop(index)
+    # update ids of posts that come after the deleted post
+    for i in range(index, len(posts)):
+        posts[i]['id'] = str(i)
     save_posts(posts)
     return redirect("/")
 
