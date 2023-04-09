@@ -54,6 +54,11 @@ def study_blog():
     return render_template('study_blog.html')
 
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
 @app.route('/post/<int:index>')
 def post(index):
     """Get the post with the given id and render the post template."""
@@ -109,6 +114,7 @@ def save_post(index):
     posts = get_posts()
     post = posts[index]
     post["title"] = request.form["title"]
+    post["tags"] = request.form["tags"]
     post["date_posted"] = request.form["date_posted"]
     post["content"] = request.form["content"]
     post["paper"] = request.form["paper"]
@@ -125,6 +131,7 @@ def new_post():
     if request.method == "POST":
         title = request.form["title"]
         date_posted = request.form["date_posted"]
+        tags = request.form["tags"]
         content = request.form["content"]
         paper = request.form["paper"]
         posts = get_posts()

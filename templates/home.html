@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-{% block title %}Marcell Emmer's Personal Blog{% endblock %}
+{% block title %}Marcell Emmer's Home Page{% endblock %}
 {% block content %}
     <header>
         <div class="title">
-            <h1>Marcell Emmer's Personal Blog</h1>
+            <h1>Marcell Emmer's Home Page</h1>
         </div>
         <div class="logo">
           <img src="../static/pictures/portrait.jpg" alt="Marcell Emmer" class="profile-pic" />
@@ -23,6 +23,12 @@
               </div>
               <div class="card-footer">
                 <small style="color: lightgray">{{ post.date_posted }}</small>
+                  {% set tags = post.tags.split(',') %}
+                    {% for tag in tags %}
+                        <span style="float: right; background-color: #888; color: white; padding: 2px 6px; margin-left: 10px; border-radius: 8px; font-size: 14px;">
+                            {{ tag }}
+                        </span>
+                    {% endfor %}
               </div>
             </div>
           </div>

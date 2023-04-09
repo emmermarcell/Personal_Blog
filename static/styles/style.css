@@ -8,6 +8,9 @@ font-family: Consolas, Monaco, 'Andale Mono', monospace;
 }
 html {
 background-color: #1a1a1a;
+  background-image: url('../pictures/penrose.svg');
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
 body {
@@ -129,7 +132,7 @@ background-color: #8be9fd;
 border: 1px solid #44475a;
 border-radius: 5px;
 overflow: hidden;
-width: 60%;
+width: 80%;
 }
 
 .pdf-container iframe {

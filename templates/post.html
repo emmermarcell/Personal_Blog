@@ -6,7 +6,15 @@
 
 {% block content %}
     <h1>{{ post['title'] }}</h1>
-    <small style="color: lightgray">Published on {{ post['date_posted'] }}</small>
+    <div style="display: flex; align-items: center;">
+        <small style="color: lightgray;">Published on {{ post['date_posted'] }}</small>
+        {% set tags = post['tags'].split(',') %}
+        {% for tag in tags %}
+            <div style=" background-color: #888; color: white; padding: 2px 6px; margin-left: 10px; border-radius: 8px; font-size: 14px;">
+                {{ tag }}
+            </div>
+        {% endfor %}
+    </div>
     {% if soup %}
         {% set html_pattern = '<pre><code class="[^"]*">([\\s\\S]*?)</code></pre>' %}
         {% set html_match = post['content']|regex_find(html_pattern) %}
@@ -53,6 +61,5 @@
             var copyButton = document.querySelector(".code-snippet-container button");
             copyButton.innerHTML = "Copied :)";
         }
-
     </script>
 {% endblock %}
