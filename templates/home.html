@@ -9,7 +9,7 @@
           <img src="../static/pictures/portrait.jpg" alt="Marcell Emmer" class="profile-pic" />
         </div>
     </header>
-    <p class="intro">I am a physicist with interests in group theory, particle physics, QFT, machine learning and more. Currently studying at the University of Technology and Economics. My research focuses on group theory and quantum information theory.</p>
+    <p class="intro">I am a physicist with interests in group theory, particle physics, QFT, machine learning and more. Currently studying at the <a href="https://www.bme.hu/?language=en">Budapest University of Technology and Economics</a> (BME). My research focuses on group theory and quantum information theory.</p>
     <div class="category">
       <h2>Latest Posts</h2>
       <div class="container">
@@ -22,7 +22,7 @@
                 <p class="card-text text-white">{{ post.content[:100] | safe  }}...</p>
               </div>
               <div class="card-footer">
-                <small class="text-muted">{{ post.date_posted }}</small>
+                <small style="color: lightgray">{{ post.date_posted }}</small>
               </div>
             </div>
           </div>

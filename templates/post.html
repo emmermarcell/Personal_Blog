@@ -6,6 +6,7 @@
 
 {% block content %}
     <h1>{{ post['title'] }}</h1>
+    <small style="color: lightgray">Published on {{ post['date_posted'] }}</small>
     {% if soup %}
         {% set html_pattern = '<pre><code class="[^"]*">([\\s\\S]*?)</code></pre>' %}
         {% set html_match = post['content']|regex_find(html_pattern) %}
@@ -49,6 +50,9 @@
             el.select();
             document.execCommand('copy');
             document.body.removeChild(el);
+            var copyButton = document.querySelector(".code-snippet-container button");
+            copyButton.innerHTML = "Copied :)";
         }
+
     </script>
 {% endblock %}
