@@ -2,9 +2,11 @@ from flask import Flask, render_template, request, redirect, session
 import json
 from bs4 import BeautifulSoup
 import re
+from pathlib import Path
 
-POSTS_FILE = r"static\posts.json"
-
+# Define the path to the json file containing the posts
+THIS_FOLDER = Path(__file__).parent.resolve()
+POSTS_FILE = THIS_FOLDER / 'static/posts.json'
 # Define your user ID here
 USER_ID = "AdventureTimeFan2000"
 PASSWORD = "LetsGoInTheGarden"
@@ -34,7 +36,7 @@ def save_posts(posts):
 
 app = Flask(__name__, template_folder='templates', static_folder='static')  # create the app
 app.secret_key = 'secret_key'  # set a secret key for the app
-app.add_template_filter(regex_find, 'regex_find')   # add the regex filter to the app
+app.add_template_filter(regex_find, 'regex_find')  # add the regex filter to the app
 
 
 @app.route('/')

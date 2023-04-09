@@ -16,10 +16,10 @@
       {% for post in posts[::-1] %}
         <div class="row mb-4">
           <div class="col">
-            <div class="card h-100">
+            <div class="card h-100 bg-dark text-white">
               <div class="card-body">
-                <h5 class="card-title"><a href="{{ url_for('post', index=post.id) }}">{{ post.title }}</a></h5>
-                <p class="card-text">{{ post.content[:100] | safe  }}...</p>
+                <h5 class="card-title"><a href="{{ url_for('post', index=post.id) }}" class="text-white">{{ post.title }}</a></h5>
+                <p class="card-text text-white">{{ post.content[:100] | safe  }}...</p>
               </div>
               <div class="card-footer">
                 <small class="text-muted">{{ post.date_posted }}</small>
@@ -40,6 +40,15 @@
       .card:hover {
         transform: translateY(-0.125rem);
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+      }
+
+      .card-title a {
+        color: #fff;
+        text-decoration: none;
+      }
+
+      .card-text {
+        color: rgba(255, 255, 255, 0.7);
       }
     </style>
 
