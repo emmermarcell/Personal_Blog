@@ -108,6 +108,12 @@ height: 100%;
 object-fit: cover;
 }
 
+@media only screen and (max-width: 600px) {
+  .profile-pic {
+    margin-top: 50px;
+  }
+}
+
 .paper-container {
 display: flex;
 flex-direction: column;

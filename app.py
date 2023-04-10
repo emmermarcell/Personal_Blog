@@ -135,7 +135,8 @@ def new_post():
         content = request.form["content"]
         paper = request.form["paper"]
         posts = get_posts()
-        post = {"id": str(len(posts)), "date_posted": date_posted, "title": title, "content": content, "paper": paper}
+        post = {"id": str(len(posts)), "date_posted": date_posted, "title": title, "tags": tags, "content": content,
+                "paper": paper}
         posts.append(post)
         # Replace with your database or file storage system
         with open(POSTS_FILE, "w") as f:

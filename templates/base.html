@@ -60,27 +60,30 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
   </head>
   <body>
-      <nav class="navbar navbar-expand-md bg-body-tertiary" data-bs-theme="dark">
-        <div class="container-fluid">
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ url_for('home') }}">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ url_for('interest_blog') }}">Interests</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ url_for('study_blog') }}">Studies</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ url_for('about') }}">About</a>
-              </li>
-            </ul>
-            <img src="../static/pictures/hungarian_flag.gif" alt="Hungarian flag" class="d-inline-block align-text-top flag">
-          </div>
-        </div>
-      </nav>
+  <nav class="navbar navbar-expand-md bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ url_for('home') }}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ url_for('interest_blog') }}">Interests</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ url_for('study_blog') }}">Studies</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ url_for('about') }}">About</a>
+          </li>
+        </ul>
+        <img src="../static/pictures/hungarian_flag.gif" alt="Hungarian flag" class="d-inline-block align-text-top flag">
+      </div>
+    </div>
+  </nav>
     <style>
       .flag {
         max-height: 30px;
