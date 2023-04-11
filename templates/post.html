@@ -2,6 +2,7 @@
 
 {% block head %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=6435d4da7ac381001a303d92&product=inline-share-buttons&source=platform" async="async"></script>
 {% endblock %}
 
 {% block content %}
@@ -15,6 +16,7 @@
             </div>
         {% endfor %}
     </div>
+    <div class="sharethis-inline-share-buttons"></div>
     {% if soup %}
         {% set html_pattern = '<pre><code class="[^"]*">([\\s\\S]*?)</code></pre>' %}
         {% set html_match = post['content']|regex_find(html_pattern) %}
