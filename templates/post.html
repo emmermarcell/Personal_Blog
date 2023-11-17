@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=6435d4da7ac381001a303d92&product=inline-share-buttons&source=platform" async="async"></script>
+{% endblock %}
+
+{% block content %}
+    <h1>{{ post['title'] }}</h1>
+    <div style="display: flex; align-items: center;">
+        <small style="color: lightgray;">Published on {{ post['date_posted'] }}</small>
+        {% set tags = post['tags'].split(',') %}
+        {% for tag in tags %}
+            <div style=" background-color: #888; color: white; padding: 2px 6px; margin-left: 10px; border-radius: 8px; font-size: 14px;">
+                {{ tag }}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="sharethis-inline-share-buttons"></div>
+    {% if soup %}
+        {% set html_pattern = '<pre><code class="[^"]*">([\\s\\S]*?)</code></pre>' %}
+        {% set html_match = post['content']|regex_find(html_pattern) %}
+        {% if html_match %}
+            {% set html_text = html_match.group(1) | safe %}
+            {% set pre_text = post['content'][:html_match.start()] %}
+            {% set post_text = post['content'][html_match.end():] %}
+
+            <p>{{ pre_text | safe }}</p>
+            <div class="code-snippet-container">
+                <pre id="html_text">{{ html_text }}</pre>
+                <button onclick="copyHtmlToClipboard()">Copy the Code!</button>
+            </div>
+            <p>{{ post_text | safe }}</p>
+        {% else %}
+            <p>{{ post['content'] | safe }}</p>
+        {% endif %}
+    {% else %}
+        <p>{{ post['content'] | safe }}</p>
+    {% endif %}
+
+    {% if post.paper != '' %}
+        <div class="paper-container">
+            <div class="pdf-container" style="margin-bottom: 20px;">
+                <iframe src='{{post.paper }}'></iframe>
+            </div>
+            <a href='{{post.paper }}' download class="download-link">Download Paper (PDF)</a>
+        </div>
+    {% endif %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+    <script>
+        function copyHtmlToClipboard() {
+            var htmlText = document.getElementById("html_text").innerHTML;
+            var el = document.createElement('textarea');
+            el.value = htmlText.replace(/<\/?[^>]+(>|$)/g, "");
+            el.setAttribute('readonly', '');
+            el.style.position = 'absolute';
+            el.style.left = '-9999px';
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            var copyButton = document.querySelector(".code-snippet-container button");
+            copyButton.innerHTML = "Copied :)";
+        }
+    </script>
+{% endblock %}

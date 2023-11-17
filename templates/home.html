@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Marcell Emmer's Home Page{% endblock %}
+{% block content %}
+    <header>
+        <div class="title">
+            <h1>Marcell Emmer's Home Page</h1>
+        </div>
+        <div class="logo">
+          <img src="../static/pictures/portrait.jpg" alt="Marcell Emmer" class="profile-pic" />
+        </div>
+    </header>
+    <p class="intro">I am a physicist with interests in group theory, particle physics, QFT, machine learning and more. Currently studying at the <a href="https://www.bme.hu/?language=en" target="_blank">Budapest University of Technology and Economics</a> (BME). My research focuses on group theory and quantum information theory.</p>
+    <div class="category">
+      <h2>Latest Posts</h2>
+      <div class="container">
+      {% for post in posts[::-1] %}
+        <div class="row mb-4">
+          <div class="col">
+            <div class="card h-100 bg-dark text-white">
+              <div class="card-body">
+                <h5 class="card-title"><a href="{{ url_for('post', index=post.id) }}" class="text-white">{{ post.title }}</a></h5>
+                <p class="card-text text-white">{{ post.content[:100] | safe  }}...</p>
+              </div>
+              <div class="card-footer">
+                <small style="color: lightgray">{{ post.date_posted }}</small>
+                  {% set tags = post.tags.split(',') %}
+                    {% for tag in tags %}
+                        <span style="float: right; background-color: #888; color: white; padding: 2px 6px; margin-left: 10px; border-radius: 8px; font-size: 14px;">
+                            {{ tag }}
+                        </span>
+                    {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    </div>
+    <style>
+      .card {
+        border-radius: 0;
+        border: none;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+      }
+
+      .card:hover {
+        transform: translateY(-0.125rem);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+      }
+
+      .card-title a {
+        color: #fff;
+        text-decoration: none;
+      }
+
+      .card-text {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      /* Media queries */
+      @media only screen and (max-width: 767px) {
+        .title {
+          text-align: center;
+        }
+        .logo {
+          text-align: center;
+        }
+        .logo img {
+          max-width: 100%;
+          margin-top: 50px;
+          top: 50px;
+        }
+      }
+    </style>
+{% endblock %}

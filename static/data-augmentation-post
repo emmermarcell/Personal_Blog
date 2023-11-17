@@ -1,0 +1,63 @@
+Edit Post
+Title:
+Data Augmentation Under the Hood
+
+
+Date:
+2023-11-16
+
+
+Tags:
+Machine Learning
+
+
+Content:
+Not having enough data for your models is a constantly reoccurring problem data scientists have to face every day. The ingenious idea that turned out to be a great remedy for it is data augmentation. Imagine you try to create a model for detecting cats in pictures. You feed the model a certain amount of data that shows cats in daylight in the middle of the picture for example. But in the test dataset, the mode encounters a picture of a cat at night or maybe a picture that has some filter on it that gives everything a purple undertone or simply a cat in the corner of the picture. Your model will completely fail to predict the right outcome when the human eye could easily bypass this problem, it is evident that the two images have very little differences in their meaning. To solve this, you could modify your original images in some ways, like rotating and shifting the image, or by playing around with different filters on them. That way your model becomes much stronger since it will see a much more extensive training dataset as its input without actually having to get more data in a traditional manner. <a href="https://www.tensorflow.org/tutorials/images/data_augmentation" target="_blank">Tensorflow</a> has an extensive library of functions responsible for augmenting your dataset e.g.tf.keras.layers.Resizing, tf.keras.layers.Rescaling, tf.keras.layers.RandomFlip, and tf.keras.layers.RandomRotation. In this example I show here today, that augmentation was done with explicit operations on numpy arrays, by scaling, rotating, and applying affine transformations on them in a random manner. I simply drew ten digits from 0 to 9 on a piece of paper, took a photo of it, and segmented the image to find the digits on it. Then I rescaled the segmented images to 28x28 pixels and augmented this dataset and fed it to a CNN. To test how well it performs, I took the MNIST dataset as a validation and test set on the model. By simply augmenting my handwritten data of digits I reach a 50% accuracy on the MNIST dataset!
+
+The image augmentation was done with the following function
+
+<pre><code class="language-python">
+def image_augmenter(image: np.ndarray, sigma_rot: float, sigma_scale: float, sigma_aff: float) -> np.ndarray:
+    """
+    Randomly rotates and does an affine transformation on an image with a normal distribution.
+    Inputs:
+      image (np.ndarray): The original image we want to transform.
+      sigma_rot (float): the standard deviation of the rotation angle in radian
+      sigma_scale (float): the standard deviation of the scaling
+      sigma_rot (float): the standard deviation of the affine transformation
+    """
+    rows, cols = image.shape
+
+    # Rotation and scaling of the image
+    rand_angle = np.random.normal(loc=0, scale=sigma_rot*360/np.pi)
+    rand_scale = np.random.normal(loc=1, scale=sigma_scale)
+    rot_mat = cv2.getRotationMatrix2D(center=(rows//2,cols//2), angle=rand_angle, scale=rand_scale)
+    rotated_image = cv2.warpAffine( image, rot_mat, (cols, rows), borderValue=(0.,0.,0.) )
+
+    # Affine transformation of the image
+    pts1 = np.float32([[5, 5],
+                   [20, 5],
+                   [5, 20]])
+
+    pts2 = np.random.normal(loc=pts1, scale=sigma_aff, size=pts1.shape)
+    pts2 = pts2.astype(np.float32)
+    affine_mat = cv2.getAffineTransform(pts1, pts2)
+    transformed_image = cv2.warpAffine(rotated_image, affine_mat, (cols, rows), borderValue=(0.,0.,0.))
+
+    # Use convolution to sharpen the image
+    conv_kernel = np.array([[0,-.5,0],[-.5,3,-.5],[0,-.5,0]])
+    convolved_image = np.clip(cv2.filter2D(transformed_image, -1, conv_kernel), 0,1)
+
+    # Clip the values between 0 and 1
+    output_image = np.clip(convolved_image,0.0,1.0)
+
+    return output_image
+</code></pre>
+
+The full code can be found on my <a href="https://github.com/emmermarcell/ML-examples/blob/main/data_augmentation_under_the_hood.ipynb"_blank">Github page</a>.
+
+
+Paper:
+
+
+
