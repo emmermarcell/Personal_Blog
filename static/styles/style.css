@@ -265,3 +265,32 @@ footer {
     text-decoration: none; /* No underline */
     border-color: #292d3e; /* Border color change on hover for contrast */
 }
+
+/* Media queries */
+@media only screen and (max-width: 767px) {
+  .title {
+    text-align: center;
+  }
+  .logo {
+    text-align: center;
+  }
+  .logo img {
+    max-width: 100%;
+    margin-top: 50px;
+    top: 50px;
+  }
+  /* Adjusting tags for mobile */
+  .card-footer span {
+    font-size: 16px; /* Increase font size */
+    padding: 2px 4px; /* Adjust padding */
+    margin-left: 5px; /* Adjust margin between tags */
+    border-radius: 4px; /* Reduce border radius */
+  }
+  /* Optional: Use flexbox for tags to improve layout */
+  .card-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end; /* Align tags to the right */
+    gap: 5px; /* Space between tags */
+  }
+}
