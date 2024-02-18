@@ -28,6 +28,23 @@ def get_posts():
     return posts
 
 
+def get_posts_for_page(page, posts_per_page):
+    # Load posts from JSON
+    with open(POSTS_FILE) as f:
+        all_posts = json.load(f)
+
+    # Sort the posts by their 'id' in descending order to ensure latest posts come first
+    sorted_posts = sorted(all_posts, key=lambda x: int(x['id']), reverse=True)
+
+    # Calculate the indices for slicing the posts for the current page
+    start_index = (page - 1) * posts_per_page
+    end_index = start_index + posts_per_page
+    page_posts = sorted_posts[start_index:end_index]
+
+    # Return the posts for the current page and the total number of posts
+    return page_posts, len(all_posts)
+
+
 def save_posts(posts):
     """Save the posts to the json file."""
     with open(POSTS_FILE, "w") as f:
@@ -41,7 +58,17 @@ app.add_template_filter(regex_find, 'regex_find')  # add the regex filter to the
 
 @app.route('/')
 def home():
-    return render_template('home.html', posts=get_posts())
+    page = request.args.get('page', 1, type=int)  # Default to page 1 if not specified
+    posts_per_page = 5
+    # Assuming get_posts() is modified to return a subset of posts and the total count
+    posts, total_posts = get_posts_for_page(page, posts_per_page)
+
+    # Calculate if there's a next page
+    has_more = page * posts_per_page < total_posts
+
+    # Now include 'page' and 'has_more' in the context passed to the template
+    return render_template('home.html', posts=posts, page=page, has_more=has_more)
+
 
 
 @app.route('/interest-blog')

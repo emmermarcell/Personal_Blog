@@ -4,7 +4,7 @@
 margin: 0;
 padding: 0;
 box-sizing: border-box;
-font-family: Consolas, Monaco, 'Andale Mono', monospace;
+font-family: 'Helvetica Neue', sans-serif;
 }
 html {
 background-color: #1a1a1a;
@@ -245,4 +245,23 @@ footer {
   .pdf-container {
     width: 100%;
   }
+}
+
+/* Pagination Styles */
+.pagination a {
+    background-color: #292d3e; /* Dark background similar to the body */
+    border: 2px solid #61afef; /* Solid border for defined edges */
+    color: #61afef; /* Link color for text */
+    padding: 10px 15px; /* Adequate padding */
+    margin: 5px 10px 20px 10px; /* Space around buttons, more at the bottom */
+    border-radius: 5px; /* Rounded corners for a modern look */
+    display: inline-block; /* Ensure buttons are properly aligned */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.pagination a:hover, .pagination a:focus {
+    background-color: #61afef; /* Highlighted background on hover/focus */
+    color: #292d3e; /* Dark text for contrast */
+    text-decoration: none; /* No underline */
+    border-color: #292d3e; /* Border color change on hover for contrast */
 }

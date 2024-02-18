@@ -11,9 +11,9 @@
     </header>
     <p class="intro">I am a physicist with interests in group theory, particle physics, QFT, machine learning and more. Currently studying at the <a href="https://www.bme.hu/?language=en" target="_blank">Budapest University of Technology and Economics</a> (BME). My research focuses on group theory and quantum information theory.</p>
     <div class="category">
-      <h2>Latest Posts</h2>
+      <h2>Latest Articles</h2>
       <div class="container">
-      {% for post in posts[::-1] %}
+      {% for post in posts %}
         <div class="row mb-4">
           <div class="col">
             <div class="card h-100 bg-dark text-white">
@@ -34,6 +34,15 @@
           </div>
         </div>
       {% endfor %}
+      <!-- Pagination Controls -->
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="/?page={{ page - 1 }}">Previous Articles</a>
+            {% endif %}
+            {% if has_more %}
+                <a href="/?page={{ page + 1 }}">Next Articles</a>
+            {% endif %}
+        </div>
     </div>
     </div>
     <style>
